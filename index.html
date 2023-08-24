@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>My Note App</title>
+      <style>
+         .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+         }
+         .note-card {
+            width: 300px;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+         }
+         .note-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+         }
+         .edit-dialog {
+            display: none;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>My Note App</h1>
+      <div id="container" class="container"></div>
+      <button id="add-btn">Add</button>
+      <dialog id="add-dialog">
+         <input type="text" id="title-input" placeholder="Enter title" required><br><br>
+         <textarea id="description-input" placeholder="Enter description" required></textarea><br><br>
+         <button id="save-btn">Save</button>
+         <button id="cancel-btn">Cancel</button>
+      </dialog>
+ 
+      <script>
+         const container = document.getElementById("container");
+         const addBtn = document.getElementById("add-btn");
+         const addDialog = document.getElementById("add-dialog");
+         const editDialog = document.getElementById("edit-dialog");
+         const titleInput = document.getElementById("title-input");
+         const descriptionInput = document.getElementById("description-input");
+         const editTitleInput = document.getElementById("edit-title-input");
+         const editDescriptionInput = document.getElementById("edit-description-input");
+         const saveBtn = document.getElementById("save-btn");
+         const cancelBtn = document.getElementById("cancel-btn");
+         const updateBtn = document.getElementById("update-btn");
+         const editCancelBtn = document.getElementById("edit-cancel-btn");
+         const openDialog = () => {
+            titleInput.value = "";
+            descriptionInput.value = "";
+            addDialog.showModal();
+         };
+         const closeDialog = () => {
+            addDialog.close();
+         };
+         const addNote = () => {
+            const title = titleInput.value;
+            const description = descriptionInput.value;
+            if (title && description) {
+               const noteCard = document.createElement("div");
+               noteCard.classList.add("note-card");
+               const titleElement = document.createElement("h3");
+               titleElement.textContent = title;
+               noteCard.appendChild(titleElement);
+               const descriptionElement = document.createElement("p");
+               descriptionElement.textContent = description;
+               noteCard.appendChild(descriptionElement);
+              
+               container.appendChild(noteCard);
+            }
+            closeDialog();
+         };
+         addBtn.addEventListener("click", openDialog);
+         cancelBtn.addEventListener("click", closeDialog);
+         saveBtn.addEventListener("click", addNote);
+
+         const updateNote = () => {
+            const newTitle = editTitleInput.value;
+            const newDescription = editDescriptionInput.value;
+            if (newTitle && newDescription) {
+               const noteCard = editDialog.noteCard;
+               const titleElement = noteCard.querySelector("h3");
+               titleElement.textContent = newTitle;
+               const descriptionElement = noteCard.querySelector("p");
+               descriptionElement.textContent = newDescription;
+               editDialog.close();
+            }
+         };
+         editCancelBtn.addEventListener("click", () => {
+            editDialog.close();
+         });
+         updateBtn.addEventListener("click", updateNote);
+      </script>
+   </body>
+</html>
